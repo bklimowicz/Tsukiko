@@ -1,0 +1,19 @@
+{
+  "name": "tsukiko",
+  "version": "0.0.4",
+  "description": "Tsukiko, multifunctional Discord bot. Her name means Tsuki \"moon\" and \"ko\" child, because she was mostly written at night because of author's insomnia. She is basically a child of the night",
+  "main": "tsukiko.js",
+  "author": {
+    "name": "S.Z.K"
+  },
+  "dependencies": {
+    "bufferutil": "^3.0.1",
+    "discord.js": "11.1.0",
+    "erlpack": "github:hammerandchisel/erlpack",
+    "jslinq": "^1.0.21",
+    "node-opus": "^0.2.6",
+    "pg-promise": "^5.9.0",
+    "sodium": "^2.0.1",
+    "uws": "^0.14.5"
+  }
+}
