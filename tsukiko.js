@@ -19,17 +19,46 @@ const db = conn.ConnectToDB('192.168.1.156', 5432, 'TsukikoDB', 'postgres', '463
 var channel;
 var adID = 0;
 
+client.commands = new DISCORD.Collection();
+
+FS.readdir('./Commands/', (err, files) => {
+    if (err) console.error(err);
+
+    console.log('Commands:');
+    var commandsFiles = files.filter(f => f.split('.').pop() === 'js');
+    if (commandsFiles.length <= 0) { return console.log('No commands found...'); }
+    else { console.log(commandsFiles.length + ' commands found.'); }
+
+    commandsFiles.forEach((f, i) => {
+        var cmds = require(`./Commands/${f}`);
+        console.log(`Command ${f} loaded...`);
+        client.commands.set(cmds.config.command, cmds);
+    });
+});
+
+FS.readdir('./AdminCommands/', (err, files) => {
+    if (err) console.error(err);
+
+    console.log('Admin commands:');
+    var commandsFiles = files.filter(f => f.split('.').pop() === 'js');
+    if (commandsFiles.length <= 0) { return console.log('No commands found...'); }
+    else { console.log(commandsFiles.length + ' commands found.'); }
+
+    commandsFiles.forEach((f, i) => {
+        var cmds = require(`./AdminCommands/${f}`);
+        console.log(`Command ${f} loaded...`);
+        client.commands.set(cmds.config.command, cmds);
+    });
+});
 
 
-db.one('select * from bot_credentials where key like \'%token%\'')
+db.one('select * from bot_credentials where key like \'%dev%\'')
     .then(data => {
         client.login(data.value);
     })
     .catch(error => {
         console.log(error);
     });
-
-//client.login(CONFIG.token);
 
 client.on("ready", () => {
     client.guilds.forEach(guild => {
@@ -40,15 +69,15 @@ client.on("ready", () => {
             .then(connection => {
                 connection.playArbitraryInput(CONFIG.radioURL);
             });
-        guild.members.forEach(member => {
-            db.one(`insert into users(ID, name) values ($1, $2)`, [member.id, member.displayName])
-                .then(() => {
-                    console.log(`Successfully added ${member.displayName} to db`);
-                })
-                .catch(error => {
-                    console.log(`Already exists`);
-                });
-        });
+        // guild.members.forEach(member => {
+        //     db.one(`insert into users(ID, name) values ($1, $2)`, [member.id, member.displayName])
+        //         .then(() => {
+        //             console.log(`Successfully added ${member.displayName} to db`);
+        //         })
+        //         .catch(error => {
+        //             console.log(`Already exists`);
+        //         });
+        // });
     });
 });
 
@@ -61,17 +90,18 @@ client.on("guildBanRemove", (guild, member) => {
 client.on("guildMemberAdd", member => {
     member.guild.defaultChannel.send(`Witaj na serwerze M&A - Discord ${member}. Baw sie dobrze!`);
     var role = member.guild.roles.get(CONFIG.defaultRole);
+
     if (MUTEDCOLLECTION.muted.indexOf(member.user.id) !== -1) {
         role = member.guild.roles.get(CONFIG.muteRole);
     }
     member.addRole(role);
-    db.one(`insert into users(ID, name) values ($1, $2)`, [member.id, member.displayName])
-        .then(() => {
-            console.log(`Successfully added ${member.displayName} to db`);
-        })
-        .catch(error => {
-            console.log(`Already exists`);
-        });
+    // db.one(`insert into users(ID, name) values ($1, $2)`, [member.id, member.displayName])
+    //     .then(() => {
+    //         console.log(`Successfully added ${member.displayName} to db`);
+    //     })
+    //     .catch(error => {
+    //         console.log(`Already exists`);
+    //     });    
 });
 client.on("guildMemberRemove", member => {
     member.guild.defaultChannel.send(`Uzytkownik ${member} wyszedl z serwera.`);
@@ -148,45 +178,56 @@ client.on('message', message => {
             .catch(error => {
                 logError(message, error);
             });
-    if (message.content.startsWith(CONFIG.prefix + "zabij")) {
-        killCommand.kill(message);
-        commandCooldown(message.author);            
-    }
-    if (message.content.startsWith(CONFIG.prefix + "wakaifix"))
-    {
-        radioFix(message.guild);
-    }
-    if (message.content.startsWith("!!test") && message.author.id === CONFIG.szk)
-    {
-        message.channel.send(`Nic do testowania :)`);
-    }
-    if (message.content.startsWith(CONFIG.prefix + "regulamin"))
-    {
-        var regulation = require("./regulations.json");
-        var reg = `\`\`\``;
-        regulation.regulations.forEach(line => {
-            reg += line + '\n';
-        });
-        reg += `\`\`\``;
-        message.channel.send(reg);
-    }
-    if (message.content.startsWith(CONFIG.prefix + "kochasz mnie?"))
-    {
-        if (message.author.id === CONFIG.szk) message.channel.send(MISC.loveSZK);
-        else message.channel.send(MISC.loveEveryone);
-    }
-    if (message.content.startsWith(CONFIG.prefix + "autor"))
-    {
-        message.channel.send(MISC.author);
-    }
+    
+    var prefix = CONFIG.prefix
+    var cont = message.content.slice(prefix.length).split(" ");
+    var args = cont.slice(1);
+    
+    if (!message.content.startsWith(prefix)) return;
+
+    var cmd = client.commands.get(cont[0]);
+    if (cmd) cmd.run(client, message, args)
+
+
+    // if (message.content.startsWith(CONFIG.prefix + "zabij")) {
+    //     killCommand.kill(message);
+    //     commandCooldown(message.author);            
+    // }
+    // if (message.content.startsWith(CONFIG.prefix + "wakaifix"))
+    // {
+    //     radioFix(message.guild);
+    // }
+    // if (message.content.startsWith("!!test") && message.author.id === CONFIG.szk)
+    // {
+    //     message.channel.send(`Nic do testowania :)`);
+    // }
+    // if (message.content.startsWith(CONFIG.prefix + "regulamin"))
+    // {
+    //     var regulation = require("./regulations.json");
+    //     var reg = `\`\`\``;
+    //     regulation.regulations.forEach(line => {
+    //         reg += line + '\n';
+    //     });
+    //     reg += `\`\`\``;
+    //     message.channel.send(reg);
+    // }
+    // if (message.content.startsWith(CONFIG.prefix + "kochasz mnie?"))
+    // {
+    //     if (message.author.id === CONFIG.szk) message.channel.send(MISC.loveSZK);
+    //     else message.channel.send(MISC.loveEveryone);
+    // }
+    // if (message.content.startsWith(CONFIG.prefix + "autor"))
+    // {
+    //     message.channel.send(MISC.author);
+    // }
 });
 
 //AD LOOP
-setInterval(() => {
-    channel.setTopic(ADS.advertisement[adID]);
-    adID++;
-    if (adID === ADS.advertisement.length) adID = 0;
-}, 20000);
+// setInterval(() => {
+//     channel.setTopic(ADS.advertisement[adID]);
+//     adID++;
+//     if (adID === ADS.advertisement.length) adID = 0;
+// }, 20000);
 
 
 Array.prototype.allValuesSame = function () {
