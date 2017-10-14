@@ -52,7 +52,7 @@ FS.readdir('./AdminCommands/', (err, files) => {
 });
 
 
-db.one('select * from bot_credentials where key like \'%dev%\'')
+db.one('select * from bot_credentials where key like \'%token%\'')
     .then(data => {
         client.login(data.value);
     })
@@ -139,7 +139,7 @@ client.on('message', message => {
                     });
             }            
         })
-        .catch(error => {
+        .catch(error => {            
             message.channel.send(`${message.guild.member(CONFIG.szk)} prosze napraw mnie!`);
             console.log(error);
         });
@@ -148,14 +148,15 @@ client.on('message', message => {
 // COMMANDS FOR ADMINS
 client.on('message', message => {
     if (message.member.roles.has(CONFIG.admin) || message.member.roles.has(CONFIG.moderator) || message.member.roles.has(CONFIG.technik)) {
-        if (message.content.startsWith(CONFIG.prefix + "mute")) {            
-            adminCommands.mute(message);
-        }
-        if (message.content.startsWith(CONFIG.prefix + "unmute")) {
-            adminCommands.unmute(message);
-        }
+        // if (message.content.startsWith(CONFIG.prefix + "mute")) {            
+        //     adminCommands.mute(message);
+        // }
+//         if (message.content.startsWith(CONFIG.prefix + "unmute")) {
+// //            message.guild.members.get().roles
+            
+//         }
         if (message.content.startsWith(CONFIG.prefix + "kick")) {
-            adminCommands.kick(message);
+            adminCommands.kick(message);            
         }
         if (message.content.startsWith(CONFIG.prefix + "ban")) {
             adminCommands.ban(message);
@@ -187,7 +188,6 @@ client.on('message', message => {
 
     var cmd = client.commands.get(cont[0]);
     if (cmd) cmd.run(client, message, args)
-
 
     // if (message.content.startsWith(CONFIG.prefix + "zabij")) {
     //     killCommand.kill(message);
@@ -246,6 +246,7 @@ function spamCondition(array) {
 
 function logError(message, error)
 {
+    
     message.channel.send(`${message.guild.member(CONFIG.szk)} prosze napraw mnie!`);
     console.log(error);
 }
