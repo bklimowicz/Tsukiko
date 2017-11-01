@@ -1,12 +1,13 @@
 const MUTEDCOLLECTION = require('d:\\Git repositories\\Tsukiko.js\\mutedCollection.json');
 const CONFIG = require('d:\\Git repositories\\Tsukiko.js\\config.json');
 const FS = require('fs');
+const COMMON = require('./../Utilities/common.js');
 
 module.exports.run = (bot, message, args) => {
-    var user = getUser(message);
-    var channel = getChannel(message);
+    var user = COMMON.getUser(message);
+    var channel = COMMON.getChannel(message);
 
-    if (message.content.endsWith("-h") || message.content.endsWith("-help")) 
+    if (message.content.endsWith(" -h") || message.content.endsWith(" -help")) 
     {
         message.channel.send({embed:{
             title:"Unmute command",
@@ -31,36 +32,17 @@ module.exports.run = (bot, message, args) => {
                             var index = MUTEDCOLLECTION.muted.indexOf(muted);
                             MUTEDCOLLECTION.muted.splice(index, 1);
                             FS.writeFile('mutedCollection.json', JSON.stringify(MUTEDCOLLECTION), function (error) {
-                                console.log('Cos poszlo nie tak');                                
+                                COMMON.logError(message, error);                               
                             });
                             message.channel.send(`${user} znowu moze pisac!`);
                         }
                     });
                 })
                 .catch(error => {
-                    console.log(error);
+                    COMMON.logError(message, error);
                 })
         }
-    });
-    
-    function getUser(message) {        
-        var user = message.mentions.members.first();
-        if (user === undefined || user == null) return false;
-        if (user.roles.has(CONFIG.admin) || user.roles.has(CONFIG.technik || user.roles.has(CONFIG.moderator))) return false;
-        return user;
-    }
-    
-    function getChannel(message) {
-        var channel = message.channel;
-        if (channel === CONFIG.defaultChannel) return false;
-        return channel;
-    }
-
-    function logError(message, error) {
-        var chan = message.guild.channels.get(CONFIG.logChannel);
-        if (chan !== null) chan.send(`${message.guild.member(CONFIG.szk)}, ${error}.`);            
-        console.log(error);
-    }        
+    });          
 }
     
 module.exports.config = {

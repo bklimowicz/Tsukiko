@@ -52,13 +52,15 @@ FS.readdir('./AdminCommands/', (err, files) => {
 });
 
 
-db.one('select * from bot_credentials where key like \'%token%\'')
-    .then(data => {
-        client.login(data.value);
-    })
-    .catch(error => {
-        console.log(error);
-    });
+// db.one('select * from bot_credentials where key like \'%token%\'')
+//     .then(data => {
+//         client.login(data.value);
+//     })
+//     .catch(error => {
+//         console.log(error);
+//     });
+
+client.login(CONFIG.token);
 
 client.on("ready", () => {
     client.guilds.forEach(guild => {

@@ -84,43 +84,43 @@ class AdminCommandsHandler {
         //     });
     //}
 
-    kick(message) {
-        var user = this.getUser(message);
-        if (!user) return message.channel.send('Zle uzyles komendy. Poprawne uzycie to ***ts!kick @uzytkownik.***');
+    // kick(message) {
+    //     var user = this.getUser(message);
+    //     if (!user) return message.channel.send('Zle uzyles komendy. Poprawne uzycie to ***ts!kick @uzytkownik.***');
 
-        user.kick()
-            .then(() => {
-                //message.guild.defaultChannel.send(`${user} zostal wyrzucony!`);
-            })
-            .catch(error => {
-                //message.guild.defaultChannel.send(`${message.guild.member(CONFIG.szk)} prosze napraw mnie!`);
-                console.log(error);
-            });
-    }
+    //     user.kick()
+    //         .then(() => {
+    //             //message.guild.defaultChannel.send(`${user} zostal wyrzucony!`);
+    //         })
+    //         .catch(error => {
+    //             //message.guild.defaultChannel.send(`${message.guild.member(CONFIG.szk)} prosze napraw mnie!`);
+    //             console.log(error);
+    //         });
+    // }
 
-    ban(message) {
-        var user = this.getUser(message);
-        if (!user) return message.channel.send('Zle uzyles komendy. Poprawne uzycie to ***ts!ban @uzytkownik.***');
+    // ban(message) {
+    //     var user = this.getUser(message);
+    //     if (!user) return message.channel.send('Zle uzyles komendy. Poprawne uzycie to ***ts!ban @uzytkownik.***');
 
-        user.ban()
-            .catch(error => {
-                //message.guild.defaultChannel.send(`${message.guild.member(CONFIG.szk)} prosze napraw mnie!`);
-                console.log(error);
-            });
-    }
+    //     user.ban()
+    //         .catch(error => {
+    //             //message.guild.defaultChannel.send(`${message.guild.member(CONFIG.szk)} prosze napraw mnie!`);
+    //             console.log(error);
+    //         });
+    // }
 
-    deleteMessages(message) {
-        var messagesToDelete = parseInt(message.content.substr(message.content.indexOf(' ') + 1));
-        if (messagesToDelete === null || messagesToDelete === undefined || isNaN(messagesToDelete)) return message.channel.send('Zle uzyles komendy. Poprawne uzycie to ***ts!usun [liczba wiadomosci].***');
-        message.channel.bulkDelete(messagesToDelete)
-            .then(() => {
-                message.channel.send(`Skasowalam ${messagesToDelete.toString()} wiadomosci!`);
-            })
-            .catch(error => {
-                message.channel.send(`${message.guild.member(CONFIG.szk)} prosze napraw mnie!`);
-                console.log(error);
-            });
-    }
+    // deleteMessages(message) {
+    //     var messagesToDelete = parseInt(message.content.substr(message.content.indexOf(' ') + 1));
+    //     if (messagesToDelete === null || messagesToDelete === undefined || isNaN(messagesToDelete)) return message.channel.send('Zle uzyles komendy. Poprawne uzycie to ***ts!usun [liczba wiadomosci].***');
+    //     message.channel.bulkDelete(messagesToDelete)
+    //         .then(() => {
+    //             message.channel.send(`Skasowalam ${messagesToDelete.toString()} wiadomosci!`);
+    //         })
+    //         .catch(error => {
+    //             message.channel.send(`${message.guild.member(CONFIG.szk)} prosze napraw mnie!`);
+    //             console.log(error);
+    //         });
+    // }
 }
 
 module.exports = AdminCommandsHandler;
