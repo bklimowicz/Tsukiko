@@ -3,23 +3,23 @@ const FS = require('fs');
 const MUTEDCOLLECTION = require('./mutedCollection.json');
 
 class AdminCommandsHandler {
-    getUser(message) {        
-        var user = message.mentions.members.first();
-        if (user === undefined || user == null) return false;
-        if (user.roles.has(CONFIG.admin) || user.roles.has(CONFIG.technik)) return false;
-        return user;
-    }
+    // getUser(message) {        
+    //     var user = message.mentions.members.first();
+    //     if (user === undefined || user == null) return false;
+    //     if (user.roles.has(CONFIG.admin) || user.roles.has(CONFIG.technik)) return false;
+    //     return user;
+    // }
 
-    getChannel(message) {
-        var channel = message.channel;
-        if (channel === CONFIG.defaultChannel) return false;
-        return channel;
-    }
+    // getChannel(message) {
+    //     var channel = message.channel;
+    //     if (channel === CONFIG.defaultChannel) return false;
+    //     return channel;
+    // }
 
-    logError(message, error) {
-        message.channel.send(`${message.guild.member(CONFIG.szk)} prosze napraw mnie!`);
-        console.log(error);
-    }
+    // logError(message, error) {
+    //     message.channel.send(`${message.guild.member(CONFIG.szk)} prosze napraw mnie!`);
+    //     console.log(error);
+    // }
 
     //mute(message) {
         // var user = this.getUser(message);

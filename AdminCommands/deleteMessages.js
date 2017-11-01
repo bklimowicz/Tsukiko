@@ -1,22 +1,47 @@
-require('./../Utilities/common.js');
+const COMMON = require('./../Utilities/common.js');
 
 module.exports.run = (bot, message, args) => {
-    message.channel.send({embed:{
-        title:"Delete messages",
-        description:"*description*",
-        color: 0x17A589 
-    }})    
+
+    if (!COMMON.isAdmin(message)) {
+        return;
+    }
+
+    if (message.content.endsWith(" -h") || message.content.endsWith(" -help"))
+    {    
+        message.channel.send({embed:{
+            title:"Delete messages",
+            description:"*description*",
+            color: 0x17A589 
+        }});    
+        return; 
+    }
 
     var messagesToDelete = parseInt(message.content.substr(message.content.indexOf(' ') + 1));
-        if (messagesToDelete === null || messagesToDelete === undefined || isNaN(messagesToDelete)) return message.channel.send('Zle uzyles komendy. Poprawne uzycie to ***ts!usun [liczba wiadomosci].***');
-        message.channel.bulkDelete(messagesToDelete)
-            .then(() => {
-                message.channel.send(`Skasowalam ${messagesToDelete.toString()} wiadomosci!`);
+    if (messagesToDelete === null || messagesToDelete === undefined || isNaN(messagesToDelete))
+        return message.channel.send('Zle uzyles komendy. Poprawne uzycie to ***ts!prune [liczba wiadomosci].***')
+            .then(message => {
+                setTimeout(function () {
+                    message.delete();
+                }, COMMON.timeout);
             })
             .catch(error => {
-                message.channel.send(`${message.guild.member(CONFIG.szk)} prosze napraw mnie!`);
-                COMMON.logError(message, error);
+                logError(message, error);
             });
+    message.channel.bulkDelete(messagesToDelete)
+        .then(() => {
+            message.channel.send(`Deleted ${messagesToDelete.toString()} messages!`)
+                .then(() => {
+                    setTimeout(function () {
+                        message.delete();
+                    }, COMMON.timeout);
+                })
+                .catch(error => {
+                    COMMON.logError(message, error);
+                })
+        })
+        .catch(error => {
+            COMMON.logError(message, error);
+        });
 }
     
 module.exports.config = {

@@ -1,21 +1,30 @@
-require('./../Utilities/common.js');
+const COMMON = require('./../Utilities/common.js');
 
 module.exports.run = (bot, message, args) => {
-    message.channel.send({embed:{
-        title:"Kick command",
-        description:"*description*",
-        color: 0x17A589 
-    }})    
 
-    var user = this.getUser(message);
+    if (!COMMON.isAdmin(message)) {
+        return;
+    }
+
+    if (message.content.endsWith(" -h") || message.content.endsWith(" -help"))
+    {    
+        message.channel.send({embed:{
+            title:"Kick command",
+            description:"*description*",
+            color: 0x17A589 
+        }});
+        return; 
+    }  
+
+    var user = COMMON.getMentionedUser(message);
     if (!user) return message.channel.send('Zle uzyles komendy. Poprawne uzycie to ***ts!kick @uzytkownik.***');
 
     user.kick()
         .then(() => {
-            //message.guild.defaultChannel.send(`${user} zostal wyrzucony!`);
+            COMMON.logError(message, `${user.user.username} is kicked`);
+            message.guild.defaultChannel.send(`${user} zostal wyrzucony!`);
         })
         .catch(error => {
-            //message.guild.defaultChannel.send(`${message.guild.member(CONFIG.szk)} prosze napraw mnie!`);
             console.log(error);
         });
 }
