@@ -1,13 +1,13 @@
 const CONFIG = require('./../config.json');
 
 module.exports = {
-    _timeout: 3000,
+    timeout: 3000,
     usersOnCmdCooldown: [],
 
     getMentionedUser(message) {        
         var user = message.mentions.members.first();
         if (user === undefined || user == null) return false;
-        if (user.roles.has(CONFIG.admin) || user.roles.has(CONFIG.technik || user.roles.has(CONFIG.moderator))) return false;
+        if (user.roles.has(CONFIG.admin) || user.roles.has(CONFIG.technik) || user.roles.has(CONFIG.moderator)) return false;
         return user;
     },
 
@@ -32,7 +32,7 @@ module.exports = {
             then(message => {
                 setTimeout(function () {
                     message.delete();
-                }, this._timeout);
+                }, this.timeout);
             })
             .catch(error => {
                 this.logError(message, error);
