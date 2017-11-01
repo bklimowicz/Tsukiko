@@ -28,7 +28,7 @@ module.exports.run = (bot, message, args) => {
             }, COMMON.timeout);
         })
         .catch(error => {
-            logError(message, error);
+            COMMON.logError(message, error);
         });
 
     if (!channel) return message.channel.send('Tej komendy mozesz uzyc tylko na kanale domyslnym')
@@ -38,7 +38,7 @@ module.exports.run = (bot, message, args) => {
             }, COMMON.timeout);
         })
         .catch(error => {
-            logError(message, error);
+            COMMON.logError(message, error);
         });
 
     var _mutedRole = message.channel.guild.roles.get(CONFIG.muteRole);

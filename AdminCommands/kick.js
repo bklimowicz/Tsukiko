@@ -17,7 +17,15 @@ module.exports.run = (bot, message, args) => {
     }  
 
     var user = COMMON.getMentionedUser(message);
-    if (!user) return message.channel.send('Zle uzyles komendy. Poprawne uzycie to ***ts!kick @uzytkownik.***');
+    if (!user) return message.channel.send('Zle uzyles komendy. Poprawne uzycie to ***ts!kick @uzytkownik.***')
+        .then(message => {
+            setTimeout(function () {
+                message.delete();
+            }, COMMON.timeout);
+        })
+        .catch(error => {
+            COMMON.logError(message, error);
+        });
 
     user.kick()
         .then(() => {
@@ -25,7 +33,7 @@ module.exports.run = (bot, message, args) => {
             message.guild.defaultChannel.send(`${user} zostal wyrzucony!`);
         })
         .catch(error => {
-            console.log(error);
+            COMMON.logError(message, error);
         });
 }
     

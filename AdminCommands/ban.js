@@ -24,7 +24,7 @@ module.exports.run = (bot, message, args) => {
             }, COMMON.timeout);
         })
         .catch(error => {
-            logError(message, error);
+            COMMON.logError(message, error);
         });
 
     user.ban()
