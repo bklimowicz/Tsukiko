@@ -1,5 +1,5 @@
-const MUTEDCOLLECTION = require('d:\\Git repositories\\Tsukiko.js\\mutedCollection.json');
-const CONFIG = require('d:\\Git repositories\\Tsukiko.js\\config.json');
+const MUTEDCOLLECTION = require('./../mutedCollection.json');
+const CONFIG = require('./../config.json');
 const FS = require('fs');
 const COMMON = require('./../Utilities/common.js');
 
