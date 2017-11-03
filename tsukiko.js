@@ -56,6 +56,7 @@ client.login(CONFIG.token);
 
 // ## PLAY RADIO ON READY ##
 client.on("ready", () => {
+    client.commands
     client.guilds.forEach(guild => {
         playRadio(guild);
         channel = guild.channels.get(CONFIG.defaultChannel);
@@ -90,45 +91,20 @@ client.on("guildMemberRemove", member => {
     member.guild.defaultChannel.send(`Uzytkownik ${member.user.username} wyszedl z serwera.`);
 });
 
-// ## SPAM HANDLER ##
-client.on('message', message => {
-    if (message.author.username === "Tsukiko" || message.author.username === "Tsukiko-dev") return;
-    if (SPAMEXCEPTION.usersByIDs.indexOf(message.author.id) > -1) return;
-    if (message.channel.id !== CONFIG.defaultChannel) return;
-
-    message.channel.fetchMessages({ limit: 3 })
-        .then(messages => {
-            var usersArray = [];
-            var contentArray = [];
-
-            messages.forEach(value => {
-                usersArray.push(value.author);
-                contentArray.push(value.content);
-            });            
-
-            if (spamCondition(usersArray) & spamCondition(contentArray))
-            {
-                messages.forEach(message => {
-                    message.delete();
-                });
-                message.channel.send(`Nie spamuj ${message.author}, prosze!`)
-                    .then(message => {
-                        setTimeout(function () {
-                            message.delete();
-                        }, 1500);
-                    })
-                    .catch(error => {
-                        COMMON.logError(message, error);
-                    });
-            }            
-        })
-        .catch(error => {            
-            COMMON.logError(message, error);
-        });
-});
-
 // ## COMMANDS ##
 client.on('message', message => {
+    
+    // if (message.content.startsWith("!!test") && message.author.id === CONFIG.szk)
+    // {
+    //     //message.channel.send(`Nic do testowania :)`);        
+    // }
+        
+    var prefix = CONFIG.prefix
+    var cont = message.content.slice(prefix.length).split(" ");
+    var args = cont.slice(1);        
+    
+    if (!message.content.startsWith(prefix)) return;
+    
     if (COMMON.usersOnCmdCooldown.indexOf(message.author) > -1)
         return message.channel.send(`Nie tak szybko, bo sie zmecze ${message.author}! >..<`).
             then(message => {
@@ -139,46 +115,6 @@ client.on('message', message => {
             .catch(error => {
                 COMMON.logError(message, error);
             });
-
-    // if (message.content.startsWith("!!test") && message.author.id === CONFIG.szk)
-    // {
-    //     //message.channel.send(`Nic do testowania :)`);        
-    // }
-    
-    var prefix = CONFIG.prefix
-    var cont = message.content.slice(prefix.length).split(" ");
-    var args = cont.slice(1);
-
-    if (!message.content.startsWith(prefix)) return;
-
-    if (message.content.startsWith(CONFIG.prefix + "zabij")) {
-        killCommand.kill(message);
-        COMMON.commandCooldown(message.author);       
-    }
-    if (message.content.startsWith(CONFIG.prefix + "wakaifix"))
-    {
-        radioFix(message.guild);
-    }
-    
-    if (message.content.startsWith(CONFIG.prefix + "regulamin"))
-    {
-        var regulation = require("./regulations.json");
-        var reg = `\`\`\``;
-        regulation.regulations.forEach(line => {
-            reg += line + '\n';
-        });
-        reg += `\`\`\``;
-        message.channel.send(reg);
-    }
-    if (message.content.startsWith(CONFIG.prefix + "kochasz mnie?"))
-    {
-        if (message.author.id === CONFIG.szk) message.channel.send(MISC.loveSZK);
-        else message.channel.send(MISC.loveEveryone);
-    }
-    if (message.content.startsWith(CONFIG.prefix + "autor"))
-    {
-        message.channel.send(MISC.author);
-    }
 
     var cmd = client.commands.get(cont[0]);
     if (cmd) cmd.run(client, message, args)
@@ -199,7 +135,20 @@ function spamCondition(array) {
     return false;
 }
 
-// ## RADIO FIX COMMAND ##
+function playRadio(guild) {    
+    const voiceChannel = guild.channels.get(CONFIG.voiceChannel);
+    voiceChannel.leave();
+    if (!voiceChannel) return;
+    voiceChannel.join()
+        .then(connection => {
+            connection.playArbitraryInput(CONFIG.radioURL);
+        })
+        .catch(error => {
+            COMMON.logError(message, error);
+            playRadio(guild);                  
+        });
+}
+
 function radioFix(guild) {
     if (client.voiceConnections.size > 0)
     {
@@ -215,18 +164,4 @@ function radioFix(guild) {
     {
         return null;
     }
-}
-
-function playRadio(guild) {    
-    const voiceChannel = guild.channels.get(CONFIG.voiceChannel);
-    voiceChannel.leave();
-    if (!voiceChannel) return;
-    voiceChannel.join()
-        .then(connection => {
-            connection.playArbitraryInput(CONFIG.radioURL);
-        })
-        .catch(error => {
-            COMMON.logError(message, error);
-            playRadio(guild);                  
-        });
 }
