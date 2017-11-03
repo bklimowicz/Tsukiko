@@ -3,7 +3,6 @@
 const DISCORD = require('discord.js');
 const CONFIG = require('./config.json');
 const SPAMEXCEPTION = require('./spamexception.json')
-const KillCommand = require('./killCommand.js');
 const FS = require('fs');
 const MUTEDCOLLECTION = require('./mutedCollection.json');
 const MISC = require('./misc.json');
@@ -11,7 +10,7 @@ const ADS = require('./ads.json');
 const COMMON = require('./Utilities/common.js');
 
 const client = new DISCORD.Client();
-const killCommand = new KillCommand();
+
 
 var channel;
 var adID = 0;
