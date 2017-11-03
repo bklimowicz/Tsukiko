@@ -56,7 +56,6 @@ client.login(CONFIG.token);
 
 // ## PLAY RADIO ON READY ##
 client.on("ready", () => {
-    client.commands
     client.guilds.forEach(guild => {
         playRadio(guild);
         channel = guild.channels.get(CONFIG.defaultChannel);
