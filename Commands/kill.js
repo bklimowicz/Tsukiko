@@ -16,13 +16,13 @@ module.exports.run = (bot, message, args) => {
     //if (user.id === message.author.id) return message.channel.send(`D-dlaczego? Prosze, nie rob tego!`);
 
     if (user.id === "225521387480154112") {
-        message.channel.send(`Nie mozesz zabic taty!`)
+        return message.channel.send(`Nie mozesz zabic taty!`)
             .catch(error => {
                 COMMON.logError(message, error);
             });
     }
     else if (user.id === "186886029502971904") {
-        message.channel.send(`Nie mozesz zabic wujka!`)
+        return message.channel.send(`Nie mozesz zabic wujka!`)
             .catch(error => {
                 COMMON.logError(message, error);
             });
@@ -39,13 +39,13 @@ module.exports.run = (bot, message, args) => {
                 .catch(error => {
                     COMMON.logError(message, error);
                 });
-        else message.channel.send(`${message.author} zabil ${user}!`)
+        else return message.channel.send(`${message.author} zabil ${user}!`)
             .catch(error => {
                 COMMON.logError(message, error);
             });
     }
     else {
-        message.channel.send(`${message.author} zabil ${user}!`)
+        return message.channel.send(`${message.author} zabil ${user}!`)
             .catch(error => {
                 COMMON.logError(message, error);
             });
