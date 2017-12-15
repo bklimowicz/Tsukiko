@@ -8,6 +8,9 @@ const MUTEDCOLLECTION = require('./mutedCollection.json');
 const MISC = require('./misc.json');
 const ADS = require('./ads.json');
 const COMMON = require('./Utilities/common.js');
+const PROFILEFACTORY = require('./Profiles/Code/profileFactory.js');
+
+//import ProfileFactory from './Profiles/Code/profileFactory.js';
 
 const client = new DISCORD.Client();
 
@@ -58,6 +61,13 @@ client.on("ready", () => {
     client.guilds.forEach(guild => {
         //playRadio(guild);
         channel = guild.channels.get(CONFIG.defaultChannel);
+
+        guild.members.forEach(member => {
+            if (member.id === CONFIG.szk) {
+                var PF = new PROFILEFACTORY();
+                PF.createProfile(member);
+            }
+        });
 
         // ## AD LOOP ##
         setInterval(() => {
