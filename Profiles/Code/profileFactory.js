@@ -28,6 +28,7 @@ class ProfileFactory {
         pattern.guildname = _profile.guildname;
         pattern.ID = _profile.id;
         pattern.avatar = _profile.avatar;
+        pattern.avatarURL = _profile.avatarUrl;
         pattern.description = _profile.description;
         pattern.roles = _profile.roles;
         pattern.joinDate = _profile.joinDate;
@@ -38,7 +39,7 @@ class ProfileFactory {
         pattern.level = _profile.level;
         pattern.equipment = _profile.equipment;                     
         
-        FS.writeFile(this.dir + pattern.name + '_' + pattern.ID + '.json', JSON.stringify(pattern));
+        FS.writeFile(this.dir + pattern.ID + '.json', JSON.stringify(pattern));
         
     }
 

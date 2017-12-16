@@ -61,9 +61,11 @@ client.on("ready", () => {
         channel = guild.channels.get(CONFIG.defaultChannel);
 
         guild.members.forEach(member => {
-            try {              
-                var PF = new PROFILEFACTORY();
-                PF.createProfile(member);                                
+            try { 
+                //if (member.id === CONFIG.szk) {
+                    var PF = new PROFILEFACTORY();
+                    PF.createProfile(member);                                
+                //}
             } catch (error) {
                 COMMON.logError(error);
             }
