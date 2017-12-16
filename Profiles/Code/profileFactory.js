@@ -25,7 +25,7 @@ class ProfileFactory {
 
         var pattern = {};
         pattern.name = _profile.name;
-        pattern.guildname = _profile.guildname;
+        pattern.guildName = _profile.guildname;
         pattern.ID = _profile.id;
         pattern.avatar = _profile.avatar;
         pattern.avatarURL = _profile.avatarUrl;
