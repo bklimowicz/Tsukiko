@@ -44,7 +44,10 @@ module.exports.run = (bot, message, args) => {
         
         embed.setFooter("Powered by Tsukiko.");
 
-        message.channel.send({embed});
+        message.channel.send({embed})
+            .catch(error => {
+                COMMON.logError(error);
+            });
             
     } catch (error) {
         COMMON.logError(error);
