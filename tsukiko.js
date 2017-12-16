@@ -10,8 +10,6 @@ const ADS = require('./ads.json');
 const COMMON = require('./Utilities/common.js');
 const PROFILEFACTORY = require('./Profiles/Code/profileFactory.js');
 
-//import ProfileFactory from './Profiles/Code/profileFactory.js';
-
 const client = new DISCORD.Client();
 
 
@@ -63,9 +61,11 @@ client.on("ready", () => {
         channel = guild.channels.get(CONFIG.defaultChannel);
 
         guild.members.forEach(member => {
-            if (member.id === CONFIG.szk) {
+            try {              
                 var PF = new PROFILEFACTORY();
-                PF.createProfile(member);
+                PF.createProfile(member);                                
+            } catch (error) {
+                COMMON.logError(error);
             }
         });
 
