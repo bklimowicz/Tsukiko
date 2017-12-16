@@ -33,7 +33,7 @@ module.exports.run = (bot, message, args) => {
         //embed.setImage(_profile.avatarURL); // TODO: For later enchancement
         embed.setAuthor(_profile.name);
         embed.setDescription(_profile.description);
-        embed.setColor(_profile.displayColor);
+        embed.setColor(message.member.displayColor);
         
         embed.addField("Guild Name", _profile.guildName);
         embed.addField("Join Date", _profile.joinDate);
