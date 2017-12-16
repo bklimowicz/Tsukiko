@@ -16,7 +16,7 @@ module.exports.run = (bot, message, args) => {
 
     if (message.content.endsWith(" -h") || message.content.endsWith(" -help")) {
         message.channel.send({embed:{
-            title:"Showing your profile",
+            title:"Shows your profile",
             description:"*description*",
             color: 0x17A589 
         }})
