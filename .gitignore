@@ -290,3 +290,4 @@ __pycache__/
 UnusedCode.txt
 config - Copy.json
 config.json
+Profiles/*.json

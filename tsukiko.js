@@ -46,29 +46,29 @@ class Tsukiko {
      * @param {Client} client 
      */
     setupReadyEvent(client) {
-        client.guilds.forEach(guild => {
-            //playRadio(guild);
-            channel = guild.channels.get(CONFIG.defaultChannel);
-    
-            guild.members.forEach(member => {
-                try { 
-                    //if (member.id === CONFIG.szk) {
+        client.on('ready', () => {
+            client.guilds.forEach(guild => {
+                //playRadio(guild);
+                this.channel = guild.channels.get(CONFIG.defaultChannel);
+        
+                guild.members.forEach(member => {
+                    try { 
                         var PF = new PROFILEFACTORY();
                         PF.createProfile(member);                                
-                    //}
-                } catch (error) {
-                    COMMON.logError(error);
-                }
-            });
-    
-            // ## AD LOOP ##
-            setInterval(() => {
-                guild.channels.get(CONFIG.defaultChannel).setTopic(ADS.advertisement[adID]);
-                adID++;
-                if (adID === ADS.advertisement.length) adID = 0;
-            }, 20000);
-            console.log(`### Ready! ###`);
-        });    
+                    } catch (error) {
+                        COMMON.logError(error);
+                    }
+                });
+        
+                // ## AD LOOP ##
+                setInterval(() => {
+                    guild.channels.get(CONFIG.defaultChannel).setTopic(ADS.advertisement[this.adID]);
+                    this.adID++;
+                    if (this.adID === ADS.advertisement.length) this.adID = 0;
+                }, 20000);
+                console.log(`### Ready! ###`);
+            });    
+        });
     }
 
     /**
