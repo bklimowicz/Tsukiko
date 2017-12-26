@@ -51,10 +51,8 @@ class Tsukiko {
                 //playRadio(guild);
                 this.channel = guild.channels.get(CONFIG.defaultChannel);
 
-                client.user.setGame('Version: ' + require('./package.json').version)
-                    .then(() => {
-                        console.log('Success');
-                    })
+
+                client.user.setPresence({ game: { name: 'Version: ' + require('./package.json').version, type: 0 } })
                     .catch(err => {
                         console.log(err);
                     });
