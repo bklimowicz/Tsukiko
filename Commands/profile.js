@@ -29,8 +29,8 @@ module.exports.run = (bot, message, args) => {
     try {
         var _profile = require(profileDir + message.author.id + '.json');
         var embed = new RichEmbed();
-
-        //embed.setImage(_profile.avatarURL); // TODO: For later enchancement
+        
+        embed.setThumbnail(_profile.avatarURL); // Thumbnail sets link from url in top right corner
         embed.setAuthor(_profile.name);
         embed.setDescription(_profile.description);
         embed.setColor(message.member.displayColor);
@@ -46,11 +46,11 @@ module.exports.run = (bot, message, args) => {
 
         message.channel.send({embed})
             .catch(error => {
-                COMMON.logError(error);
+                COMMON.logError(message, error);
             });
             
     } catch (error) {
-        COMMON.logError(error);
+        COMMON.logError(message, error);
     }
 }
     

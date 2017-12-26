@@ -33,6 +33,8 @@ class ProfileFactory {
         pattern.roles = _profile.roles;
         pattern.joinDate = _profile.joinDate;
         // TSUKIKO INFO
+
+
         pattern.birthday = _profile.birthday;
         pattern.messagesCount = _profile.messagesCount;
         pattern.score = _profile.score;
@@ -41,10 +43,6 @@ class ProfileFactory {
         
         FS.writeFile(this.dir + pattern.ID + '.json', JSON.stringify(pattern));
         
-    }
-
-    updateProfile(_guildMember) {
-
     }
 }
 module.exports = ProfileFactory;

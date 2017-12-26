@@ -50,15 +50,26 @@ class Tsukiko {
             client.guilds.forEach(guild => {
                 //playRadio(guild);
                 this.channel = guild.channels.get(CONFIG.defaultChannel);
-        
-                guild.members.forEach(member => {
-                    try { 
-                        var PF = new PROFILEFACTORY();
-                        PF.createProfile(member);                                
-                    } catch (error) {
-                        COMMON.logError(error);
-                    }
-                });
+
+                client.user.setGame('Version: ' + require('./package.json').version)
+                    .then(() => {
+                        console.log('Success');
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+                
+                /**
+                 * Call it only once to set up accounts of users that already are on a server
+                 */
+                // guild.members.forEach(member => {
+                //     try { 
+                //         var PF = new PROFILEFACTORY();
+                //         PF.createProfile(member);                                
+                //     } catch (error) {
+                //         COMMON.logError(error);
+                //     }
+                // });
         
                 // ## AD LOOP ##
                 setInterval(() => {
@@ -97,8 +108,15 @@ class Tsukiko {
      */
     setupGuildMemberAddEvent(client) {
         client.on("guildMemberAdd", member => {
-            member.guild.defaultChannel.send(`Witaj na serwerze M&A - Discord ${member}. Baw sie dobrze!`);
+            _message = member.guild.defaultChannel.send(`Witaj na serwerze M&A - Discord ${member}. Baw sie dobrze!`);
             var role = member.guild.roles.get(CONFIG.defaultRole);
+
+            try { 
+                var PF = new PROFILEFACTORY();
+                PF.createProfile(member);                                
+            } catch (error) {
+                COMMON.logError(_message, error);
+            }            
         
             if (MUTEDCOLLECTION.muted.indexOf(member.user.id) !== -1) {
                 role = member.guild.roles.get(CONFIG.muteRole);
@@ -123,6 +141,20 @@ class Tsukiko {
      */
     setupMessageEvent(client) {
         client.on('message', message => {
+
+            var _profile = require('./Profiles/' + message.author.id + '.json');
+            _profile.messagesCount++;
+            try {
+                _profile.score += Math.ceil(1 + message.content.length / 30);
+            } catch (error) {
+                COMMON.logError(message, error);
+            }
+
+            FS.writeFile('./Profiles/' + message.author.id + '.json', JSON.stringify(_profile), function (err) {
+                if (err) COMMON.logError(message, error);
+            })
+
+
             var prefix = CONFIG.prefix
             var cont = message.content.slice(prefix.length).split(" ");
             var args = cont.slice(1);        
