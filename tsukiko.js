@@ -106,14 +106,15 @@ class Tsukiko {
      */
     setupGuildMemberAddEvent(client) {
         client.on("guildMemberAdd", member => {
-            _message = member.guild.defaultChannel.send(`Witaj na serwerze M&A - Discord ${member}. Baw sie dobrze!`);
+            member.guild.defaultChannel.send(`Witaj na serwerze M&A - Discord ${member}. Baw sie dobrze!`);
             var role = member.guild.roles.get(CONFIG.defaultRole);
 
             try { 
                 var PF = new PROFILEFACTORY();
                 PF.createProfile(member);                                
             } catch (error) {
-                COMMON.logError(_message, error);
+                //COMMON.logError(_message, error);
+                console.log('Profile creation failed!');
             }            
         
             if (MUTEDCOLLECTION.muted.indexOf(member.user.id) !== -1) {
