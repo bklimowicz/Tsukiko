@@ -33,8 +33,8 @@ module.exports.run = (bot, message, args) => {
                 .catch(error => {
                     COMMON.logError(message, error);
                 });
-        var chance = Math.floor(Math.random() * 10000);
-        if (chance < 9999)
+        var chance = Math.floor((Math.random() * 10000) + 1);
+        if (chance < 9998)
             return message.channel.send(`Ups! Kula odbila sie od szyi strusia i trafila cię w czolo! \`${chance}\``)
                 .catch(error => {
                     COMMON.logError(message, error);
