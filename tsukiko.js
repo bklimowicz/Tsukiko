@@ -1,4 +1,5 @@
 const Client = require('discord.js').Client;
+const TextChannel = require('discord.js').TextChannel;
 
 const __DISCORD = require('discord.js');
 const FS = require('fs');
@@ -9,6 +10,7 @@ const MISC = require('./misc.json');
 const ADS = require('./ads.json');
 const COMMON = require('./Utilities/common.js');
 const PROFILEFACTORY = require('./Profiles/Code/profileFactory.js');
+const CHANNELFACTORY = require('./Utilities/channelFactory.js');
 
 class Tsukiko {
     constructor() {
@@ -39,6 +41,7 @@ class Tsukiko {
         this.setupGuildMemberAddEvent(client);
         this.setupGuildMemberRemoveEvent(client);
         this.setupMessageEvent(client);
+        this.setupChannelCreatedEvent(client);
     }
 
     /**
@@ -76,8 +79,27 @@ class Tsukiko {
                     if (this.adID === ADS.advertisement.length) this.adID = 0;
                 }, 20000);
                 console.log(`### Ready! ###`);
+
+                var CF = new CHANNELFACTORY(client, guild);
+                setInterval(() => {
+                    CF.shouldOpenNewChannel(client);
+                }, 5000);
             });    
+
         });
+    }
+
+    /**
+     * 
+     * @param {Client} client 
+     */
+    setupChannelCreatedEvent(client) {
+        client.on('channelCreate', channel => {
+            /**
+             * @type {TextChannel}
+             */
+            var newChannel = client.guilds.get('192321775692939264').channels.get(channel.id);            
+        })
     }
 
     /**
