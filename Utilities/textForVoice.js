@@ -28,48 +28,67 @@ class TextForVoice {
         this.voiceChannelName = channel.name.split(' ');
         this.channelName = this.namePrefix + this.nameConst + this.voiceChannelName[1 | 0].toString();
 
-        this.myChannel = this.guild.createChannel(this.channelName, 'text')
+        this.guild.createChannel(this.channelName, 'text')
             .then(textChannel => {
-                this.removeReadPermission(textChannel);
-                this.updatePermissions(textChannel);    
-                this.deleteChannel();
-
-                var json = require('./../textChannelsForVoice.json');
-                var data = 
-                    {
-                        name: this.channelName,
-                        textID: textChannel.id,
-                        voiceID: this.channel.id
-                    }                    ;
-                json.channels.push(data);                
-                FS.writeFile('./textChannelsForVoice.json', JSON.stringify(json), function (err) {
-                    if (err) COMMON.logError(message, error);
-                });      
-                
-                return textChannel;
+                this.initializeChannel(textChannel);
             })
             .catch(error => {
                 console.log(error);
-            });         
-            
-        
+            });                                 
+    }
+
+    initializeChannel(textChannel) {
+        this.removeReadPermissionsWatcher(textChannel);
+        this.updatePermissionsWatcher(textChannel);
+        this.deleteChannelWatcher(textChannel);
+        var json = require('./../textChannelsForVoice.json');
+        var data = {
+            name: this.channelName,
+            textID: textChannel.id,
+            voiceID: this.channel.id,
+        };
+        json.channels.push(data);
+        FS.writeFile('./textChannelsForVoice.json', JSON.stringify(json), function (err) {
+            if (err)
+                console.log(err);
+        });
+        this.myChannel = textChannel;
     }
 
     /**
      * 
      * @param {TEXTCHANNEL} textChannel 
      */
-    deleteChannel(textChannel) {
+    deleteChannelWatcher(textChannel) {
         setInterval(() => {
-            if (this.channel.members < 1) textChannel.delete();
+            this.deleteChannel(textChannel);
         }, 10000);
     }
 
+
+
+    deleteChannel(textChannel) {
+        if (this.channel.members.size < 1) {
+            var json = require('./../textChannelsForVoice.json');
+            var index = json.channels.findIndex(obj => {
+                return obj.textID === this.myChannel.id;
+            });
+            if (index > -1) {
+                json.channels.splice(index, 1);
+                FS.writeFile('./textChannelsForVoice.json', JSON.stringify(json), function (err) {
+                    if (err)
+                        console.log(err);
+                });
+                textChannel.delete();
+            }
+        }
+    }
+
     /**
      * 
      * @param {TEXTCHANNEL} textChannel 
      */
-    updatePermissions(textChannel) {
+    updatePermissionsWatcher(textChannel) {
         if (textChannel === null || textChannel === undefined) return;
         setInterval(() => {
             if (this.voiceMembers !== this.channel.members.array) {
@@ -81,7 +100,7 @@ class TextForVoice {
                 }
             }
             this.voiceMembers = this.channel.members;
-        }, 1000);
+        }, 5000);
     }
 
     /**
@@ -122,7 +141,7 @@ class TextForVoice {
      * 
      * @param {TEXTCHANNEL} textChannel 
      */
-    removeReadPermission(textChannel) {
+    removeReadPermissionsWatcher(textChannel) {
         if (textChannel === null || textChannel === undefined) return;
         var role = this.guild.roles.get('192321775692939264');
         textChannel.overwritePermissions(role, {

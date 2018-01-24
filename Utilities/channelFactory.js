@@ -49,10 +49,6 @@ class ChannelFactory {
         });
     }
 
-    shouldCloseChannel() {
-        //this.open
-    }
-
     /**
      * Ask if should create text channel
      * TODO: later implementation
@@ -79,27 +75,39 @@ class ChannelFactory {
      * @param {string} channelName
      * @returns {boolean}
      */
-    channelAlreadyExists(channelName) {
+    channelAlreadyExists(voiceID) {
         /**
          * @type {TEXTCHANNEL[]}
          */
         var textChannels = this.getChannelsByType('text');    
         var result = false;
-        var openedChannels = require('./../textChannelsForVoice.json').channels; 
+        var openedChannels = require('./../textChannelsForVoice.json').channels;
+        var index = openedChannels.findIndex(obj => {
+            return obj.voiceID === voiceID;
+        });
 
-        openedChannels.forEach(mychannel => {
-            textChannels.forEach(channel => {
-                if (mychannel.textID === channel.id) {
-                    result = true;
+        if (index > -1) {            
+            textChannels.forEach(textChannel => {
+                if (openedChannels[index].textID === textChannel.id || openedChannels[index].name === textChannel.name) {
+                    result = true;                    
                 }
             });
-        });
+        }
+
+        // openedChannels.forEach(mychannel => {
+        //     textChannels.forEach(channel => {
+        //         if (mychannel.textID === channel.id) {
+        //             result = true;
+        //         }
+        //     });
+        // });
 
         return result;
     }
 
     /**
-     * Return array of all channels of given type in guild
+     * Return array of all channels of given type in guild.
+     * Param type: "dm", "text", "voice", "group"
      * @param {string} channelType 
      * @returns {VOICECHANNEL[] | TEXTCHANNEL[]}
      */
