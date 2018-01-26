@@ -93,15 +93,6 @@ class ChannelFactory {
                 }
             });
         }
-
-        // openedChannels.forEach(mychannel => {
-        //     textChannels.forEach(channel => {
-        //         if (mychannel.textID === channel.id) {
-        //             result = true;
-        //         }
-        //     });
-        // });
-
         return result;
     }
 
