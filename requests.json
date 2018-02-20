@@ -1,1 +1,1 @@
-{"requests":[{"type":"suggest","message":"example suggest1"},{"type":"suggest","message":"example suggest2"},{"type":"notSuggest","message":"notSuggest"},{"type":"suggest","message":"Zrobiłem,sobie,sugestie"}]}
+{"requests":[]}

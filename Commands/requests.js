@@ -11,8 +11,8 @@ module.exports.run = (bot, message, args) => {
 
     if (message.content.endsWith(" -h") || message.content.endsWith(" -help")) {
         message.channel.send({embed:{
-            title:"Suggest",
-            description:"*description*",
+            title:"Requests",
+            description:"*Pokazuje listę oczekujących żądań*",
             color: 0x17A589 
         }})
         return;
@@ -24,7 +24,7 @@ module.exports.run = (bot, message, args) => {
         var json = require('./../requests.json');
         json.requests.forEach(object => {
             if (object.type === "suggest") {
-                msg += `${iterator}. ${object.message}\n`;
+                msg += `${iterator}. Autor: ${object.author}: ${object.message}\n`;
                 msg += `------------------------------\n`;
                 iterator++;
             }
