@@ -131,13 +131,13 @@ class Tsukiko {
             member.guild.defaultChannel.send(`Witaj na serwerze M&A - Discord ${member}. Baw sie dobrze!`);
             var role = member.guild.roles.get(CONFIG.defaultRole);
 
-            try { 
-                var PF = new PROFILEFACTORY();
-                PF.createProfile(member);                                
-            } catch (error) {
-                //COMMON.logError(_message, error);
-                console.log('Profile creation failed!');
-            }            
+            // try { 
+            //     var PF = new PROFILEFACTORY();
+            //     PF.createProfile(member);                                
+            // } catch (error) {
+            //     //COMMON.logError(_message, error);
+            //     console.log('Profile creation failed!');
+            // }            
         
             if (MUTEDCOLLECTION.muted.indexOf(member.user.id) !== -1) {
                 role = member.guild.roles.get(CONFIG.muteRole);
@@ -163,17 +163,17 @@ class Tsukiko {
     setupMessageEvent(client) {
         client.on('message', message => {
 
-            var _profile = require('./Profiles/' + message.author.id + '.json');
-            _profile.messagesCount++;
-            try {
-                _profile.score += Math.ceil(1 + message.content.length / 30);
-            } catch (error) {
-                COMMON.logError(message, error);
-            }
+            // var _profile = require('./Profiles/' + message.author.id + '.json');
+            // _profile.messagesCount++;
+            // try {
+            //     _profile.score += Math.ceil(1 + message.content.length / 30);
+            // } catch (error) {
+            //     COMMON.logError(message, error);
+            // }
 
-            FS.writeFile('./Profiles/' + message.author.id + '.json', JSON.stringify(_profile), function (err) {
-                if (err) COMMON.logError(message, error);
-            })
+            // FS.writeFile('./Profiles/' + message.author.id + '.json', JSON.stringify(_profile), function (err) {
+            //     if (err) COMMON.logError(message, error);
+            // })
 
 
             var prefix = CONFIG.prefix
