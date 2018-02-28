@@ -28,11 +28,11 @@ module.exports.run = (bot, message, args) => {
             });
     }
     if (user.id === "205024027851489280") {
-        if (message.author.id === "205024027851489280")
-            return message.channel.send(`https://media.giphy.com/media/12KiGLydHEdak8/giphy.gif`)
-                .catch(error => {
-                    COMMON.logError(message, error);
-                });
+        // if (message.author.id === "205024027851489280")
+        //     return message.channel.send(`https://media.giphy.com/media/12KiGLydHEdak8/giphy.gif`)
+        //         .catch(error => {
+        //             COMMON.logError(message, error);
+        //         });
         var chance = Math.floor((Math.random() * 10000) + 1);
         if (chance < 9998)
             return message.channel.send(`Ups! Kula odbila sie od szyi strusia i trafila cię w czolo! \`${chance}\``)
