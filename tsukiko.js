@@ -80,10 +80,10 @@ class Tsukiko {
                 }, 20000);
                 console.log(`### Ready! ###`);
 
-                // var CF = new CHANNELFACTORY(client, guild);
-                // setInterval(() => {
-                //     CF.shouldOpenNewChannel(client);
-                // }, 5000);
+                var CF = new CHANNELFACTORY(client, guild);
+                setInterval(() => {
+                    CF.shouldOpenNewChannel(client);
+                }, 5000);
             });    
 
         });

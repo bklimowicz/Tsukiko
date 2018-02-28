@@ -14,8 +14,8 @@ class TextForVoice {
      * @param {VOICECHANNEL} channel
      */
     constructor(client, guild, channel) {
-        this.namePrefix = 'tsu_';
-        this.nameConst = 'kanal_';
+        this.namePrefix = 'tsu';
+        this.nameConst = 'kanal';
         this.client = client;
         this.guild = guild;
         this.channel = channel;
