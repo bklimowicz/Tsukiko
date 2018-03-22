@@ -158,6 +158,7 @@ class TextForVoice {
 
     /**
      * Directly adds READ_MESSAGES permission.
+     * *** DOESN'T WORK ***
      * @param {TEXTCHANNEL} textChannel 
      * @param {GUILDMEMBER[]} members 
      */
@@ -176,6 +177,7 @@ class TextForVoice {
 
     /**
      * Directly removes READ_MESSAGES permission.
+     * *** DOESN'T WORK ***
      * @param {TEXTCHANNEL} textChannel 
      * @param {GUILDMEMBER[]} members 
      */

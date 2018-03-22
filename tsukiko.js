@@ -54,23 +54,11 @@ class Tsukiko {
                 //playRadio(guild);
                 this.channel = guild.channels.get(CONFIG.defaultChannel);
 
-
+                // ## SET GAME OF TSUKIKO ##
                 client.user.setPresence({ game: { name: 'Version: ' + require('./package.json').version, type: 0 } })
                     .catch(err => {
                         console.log(err);
-                    });
-                
-                /**
-                 * Call it only once to set up accounts of users that already are on a server
-                 */
-                // guild.members.forEach(member => {
-                //     try { 
-                //         var PF = new PROFILEFACTORY();
-                //         PF.createProfile(member);                                
-                //     } catch (error) {
-                //         COMMON.logError(error);
-                //     }
-                // });
+                    });            
         
                 // ## AD LOOP ##
                 setInterval(() => {
@@ -90,7 +78,7 @@ class Tsukiko {
     }
 
     /**
-     * 
+     * Handler for a channelCreate event
      * @param {Client} client 
      */
     setupChannelCreatedEvent(client) {
@@ -103,7 +91,7 @@ class Tsukiko {
     }
 
     /**
-     * 
+     * Handler for a guildBanAdd event
      * @param {Client} client 
      */
     setupGuildBanAddEvent(client) {
@@ -113,7 +101,7 @@ class Tsukiko {
     }
 
     /**
-     * 
+     * Handler for a guildBanRemove event
      * @param {Client} client 
      */
     setupGuildBanRemoveEvent(client) {
@@ -123,22 +111,15 @@ class Tsukiko {
     }
 
     /**
-     * 
+     * Handler for a guildMemberAdd event
      * @param {Client} client 
      */
     setupGuildMemberAddEvent(client) {
         client.on("guildMemberAdd", member => {
             member.guild.defaultChannel.send(`Witaj na serwerze M&A - Discord ${member}. Baw sie dobrze!`);
-            var role = member.guild.roles.get(CONFIG.defaultRole);
-
-            // try { 
-            //     var PF = new PROFILEFACTORY();
-            //     PF.createProfile(member);                                
-            // } catch (error) {
-            //     //COMMON.logError(_message, error);
-            //     console.log('Profile creation failed!');
-            // }            
+            var role = member.guild.roles.get(CONFIG.defaultRole);      
         
+            // TODO: Change this to read/write to the TsuDB
             if (MUTEDCOLLECTION.muted.indexOf(member.user.id) !== -1) {
                 role = member.guild.roles.get(CONFIG.muteRole);
             }
@@ -147,7 +128,7 @@ class Tsukiko {
     }
 
     /**
-     * 
+     * Handler for a guildMemberRemove event
      * @param {Client} client 
      */
     setupGuildMemberRemoveEvent(client) {
@@ -157,12 +138,14 @@ class Tsukiko {
     }
 
     /**
-     * 
+     * Handler for a message (sent by user) event
      * @param {Client} client 
      */
     setupMessageEvent(client) {
         client.on('message', message => {
 
+
+            // TODO: Change this to read/write to the TsuDB
             // var _profile = require('./Profiles/' + message.author.id + '.json');
             // _profile.messagesCount++;
             // try {
@@ -200,7 +183,7 @@ class Tsukiko {
     }
 
     /**
-     * 
+     * Logs in client
      * @param {Client} client 
      */
     login(client) {
@@ -208,7 +191,7 @@ class Tsukiko {
     }
 
     /**
-     * 
+     * Loads commands from ./AdminCommands folder
      * @param {Client} client 
      */
     loadAdminCommands(client) {
@@ -232,7 +215,7 @@ class Tsukiko {
     }
 
     /**
-     * 
+     * Loads commands from ./Commands folder
      * @param {Client} client 
      */
     loadCommands(client) {
