@@ -1,3 +1,4 @@
+"use strict"
 const CONFIG = require('./../config.json');
 const MESSAGE = require('discord.js').Message;
 const CHANNEL = require('discord.js').Channel;

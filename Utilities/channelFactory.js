@@ -1,3 +1,4 @@
+"use strict"
 var CLIENT = require('discord.js').Client;
 var TEXTCHANNEL = require('discord.js').TextChannel;
 var VOICECHANNEL = require('discord.js').VoiceChannel;

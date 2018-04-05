@@ -1,3 +1,5 @@
+"use strict"
+
 const Client = require('discord.js').Client;
 const TextChannel = require('discord.js').TextChannel;
 

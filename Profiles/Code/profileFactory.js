@@ -1,3 +1,4 @@
+"use strict"
 const COMMON = require('./../../Utilities/common.js');
 const GuildMember = require("discord.js").GuildMember;
 const FS = require('fs');

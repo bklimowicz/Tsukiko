@@ -1,3 +1,4 @@
+"use strict"
 const User = require("discord.js").User;
 const GuildMember = require("discord.js").GuildMember;
 const Role = require("discord.js").Role;
