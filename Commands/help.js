@@ -3,7 +3,7 @@ module.exports.run = (bot, message, args) => {
     if (message.content.endsWith(" -h") || message.content.endsWith(" -help")) {
         message.channel.send({embed:{
             title:"Help",
-            description:"*description*",
+            description:"*Pomagam.*",
             color: 0x17A589 
         }})
         return;
