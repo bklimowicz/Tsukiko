@@ -36,7 +36,7 @@ module.exports = {
      */
     logError(message, error) {
         var chan = message.guild.channels.get(CONFIG.logChannel);
-        if (chan !== null) chan.send(`${new Date().toTimeString()}: ${message.guild.member(CONFIG.szk)}, ${error}.`);            
+        if (chan !== null) chan.send(`${new Date().toTimeString()}: ${error}.`);            
         console.log(error);        
     },
 
